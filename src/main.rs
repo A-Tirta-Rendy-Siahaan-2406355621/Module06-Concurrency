@@ -1,4 +1,4 @@
-use hello::ThreadPool;   
+use hello::ThreadPool;
 use std::{
     fs,
     io::{prelude::*, BufReader},
@@ -9,7 +9,9 @@ use std::{
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
-    let pool = ThreadPool::new(4);   // 4 threads
+    
+    // Menggunakan build() sebagai pengganti new()
+    let pool = ThreadPool::build(4).unwrap();
 
     println!("Server running on http://127.0.0.1:7878 with 4 threads");
 

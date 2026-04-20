@@ -164,4 +164,23 @@ Dengan ThreadPool, saya belajar konsep **thread pooling**, **message passing** m
 **Commit Message:** `(5) Multithreaded server using Threadpool`
 
 
+## Bonus Reflection Notes
+
+### (Bonus) Function improvement
+
+Pada bonus ini, saya mengganti method `new()` menjadi `build()` yang mengembalikan `Result<ThreadPool, &'static str>`.
+
+#### Perubahan yang dilakukan:
+- Mengubah `ThreadPool::new()` menjadi `ThreadPool::build(size: usize) -> Result<ThreadPool, &'static str>`
+- Menambahkan pengecekan `if size == 0` untuk menghindari ThreadPool dengan ukuran nol
+- Menggunakan `.unwrap()` di `main.rs` untuk menangani error (bisa ditingkatkan lagi nanti)
+
+#### Alasan Perubahan:
+Method `new()` sebelumnya menggunakan `assert!()` yang akan langsung panic jika size = 0. Dengan `build()`, kita memberikan error handling yang lebih graceful dan idiomatic di Rust.
+
+#### Reflection:
+Saya belajar perbedaan antara `new()` dan `build()` di Rust. Method `build()` lebih fleksibel karena mengembalikan `Result`, sehingga programmer bisa menangani error dengan lebih baik daripada langsung panic. Ini adalah best practice ketika membuat constructor yang mungkin gagal.
+
+**Commit Message:** `(Bonus) Function improvement`
+
 
