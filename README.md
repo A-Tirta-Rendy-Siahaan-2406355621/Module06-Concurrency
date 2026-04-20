@@ -140,3 +140,28 @@ Dari simulasi ini saya mengerti kenapa single-threaded server tidak cocok untuk 
 **Commit Message:** `(4) Simulation of slow request`
 
 
+
+
+## Commit 5 Reflection Notes
+
+### (5) Multithreaded server using Threadpool
+
+Pada milestone ini, saya mengubah server dari single-threaded menjadi multithreaded menggunakan `ThreadPool` custom.
+
+#### Perubahan yang dilakukan:
+- Membuat module `ThreadPool` di `src/lib.rs` yang menggunakan `mpsc` channel, `Arc<Mutex>`, dan `thread::spawn`
+- Mengubah `main.rs` untuk menggunakan `ThreadPool::new(4)`
+- Mengganti loop `for stream in listener.incoming()` dengan `pool.execute(|| { handle_connection(stream) })`
+
+#### Pengamatan:
+Sekarang ketika saya membuka banyak tab sekaligus (termasuk `/sleep`), server tetap responsif. Request lambat tidak lagi memblokir request lain. Server dapat menangani hingga 4 request secara paralel.
+
+
+
+#### Reflection:
+Dengan ThreadPool, saya belajar konsep **thread pooling**, **message passing** menggunakan channel, dan **shared ownership** dengan `Arc<Mutex>`. Ini jauh lebih baik dibandingkan single-threaded server. Sekarang server saya lebih siap menghadapi banyak user secara bersamaan.
+
+**Commit Message:** `(5) Multithreaded server using Threadpool`
+
+
+
