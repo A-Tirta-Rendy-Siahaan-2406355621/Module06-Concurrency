@@ -89,3 +89,35 @@ Pesan di halaman HTML sudah saya ubah menjadi:
 cargo run
 
 
+
+# Rust HTTP Server - Hello World
+
+Proyek sederhana HTTP Server menggunakan Rust.
+
+## Commit 3 Reflection Notes
+
+### (3) Validating the Request and Selectively Responding
+
+Pada milestone ini, saya merefaktor fungsi `handle_connection` agar server dapat memvalidasi request dari client dan memberikan respons yang berbeda sesuai dengan permintaan.
+
+#### Perubahan yang dilakukan:
+- Membaca baris pertama HTTP request (`request_line`)
+- Menggunakan conditional `if-else` untuk menentukan jenis respons:
+  - Jika request adalah **`GET / HTTP/1.1`** → mengembalikan `hello.html` dengan status **200 OK**
+  - Jika request selain itu (misalnya `/bad`, `/about`, dll) → mengembalikan `404.html` dengan status **404 NOT FOUND**
+- Memisahkan logic antara response sukses dan response error
+
+#### Alasan Refactoring Diperlukan:
+Sebelumnya server selalu mengembalikan `hello.html` meskipun URL yang diminta tidak ada. Ini tidak realistis karena web server seharusnya memberikan respons yang sesuai (success atau error). Dengan validasi request, server menjadi lebih pintar dan sesuai dengan perilaku HTTP yang sebenarnya.
+
+#### Screenshot Hasil:
+
+![Commit 2 screen capture] (assets\images\404.png)
+
+
+#### Reflection:
+Dari milestone ini saya memahami pentingnya mem-parsing HTTP request meskipun hanya baris pertama. Saya juga belajar bagaimana memisahkan logic response agar kode lebih mudah dibaca dan dikelola di masa depan. Refactoring ini menjadi dasar untuk menambahkan routing yang lebih kompleks nantinya.
+
+**Commit Message:** `(3) Validating request and selectively responding`
+
+
