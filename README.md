@@ -110,14 +110,33 @@ Pada milestone ini, saya merefaktor fungsi `handle_connection` agar server dapat
 #### Alasan Refactoring Diperlukan:
 Sebelumnya server selalu mengembalikan `hello.html` meskipun URL yang diminta tidak ada. Ini tidak realistis karena web server seharusnya memberikan respons yang sesuai (success atau error). Dengan validasi request, server menjadi lebih pintar dan sesuai dengan perilaku HTTP yang sebenarnya.
 
-#### Screenshot Hasil:
-
-![Commit 2 screen capture] (assets\images\404.png)
 
 
 #### Reflection:
 Dari milestone ini saya memahami pentingnya mem-parsing HTTP request meskipun hanya baris pertama. Saya juga belajar bagaimana memisahkan logic response agar kode lebih mudah dibaca dan dikelola di masa depan. Refactoring ini menjadi dasar untuk menambahkan routing yang lebih kompleks nantinya.
 
 **Commit Message:** `(3) Validating request and selectively responding`
+
+
+## Commit 4 Reflection Notes
+
+### (4) Simulation of slow request
+
+Pada milestone ini, saya mensimulasikan masalah pada server single-threaded dengan menambahkan route `/sleep` yang sengaja di-delay selama 10 detik menggunakan `thread::sleep`.
+
+#### Perubahan yang dilakukan:
+- Menambahkan `thread` dan `time::Duration` ke dependencies
+- Menggunakan `match` expression untuk menangani route yang berbeda
+- Menambahkan delay 10 detik pada route `GET /sleep HTTP/1.1`
+
+#### Pengamatan:
+Ketika saya membuka `http://127.0.0.1:7878/sleep` di satu tab browser, tab lain yang mengakses `http://127.0.0.1:7878` juga menjadi sangat lambat (terblokir selama 10 detik). Ini menunjukkan bahwa server hanya bisa memproses satu request dalam satu waktu.
+
+
+
+#### Reflection:
+Dari simulasi ini saya mengerti kenapa single-threaded server tidak cocok untuk web server sungguhan. Satu request lambat saja bisa membuat semua user lain menunggu. Ini menjadi alasan kuat kenapa kita perlu menggunakan multithreading di milestone berikutnya agar server bisa melayani banyak request secara bersamaan.
+
+**Commit Message:** `(4) Simulation of slow request`
 
 

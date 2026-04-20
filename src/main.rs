@@ -2,6 +2,8 @@ use std::{
     fs,
     io::{prelude::*, BufReader},
     net::{TcpListener, TcpStream},
+    thread,
+    time::Duration,
 };
 
 fn main() {
@@ -23,14 +25,18 @@ fn handle_connection(mut stream: TcpStream) {
         .take_while(|line| !line.is_empty())
         .collect();
 
-    // Ambil baris pertama request (contoh: "GET / HTTP/1.1")
     let request_line = &http_request[0];
 
-    // Pilih response berdasarkan request
-    let (status_line, filename) = if request_line == "GET / HTTP/1.1" {
-        ("HTTP/1.1 200 OK", "hello.html")
-    } else {
-        ("HTTP/1.1 404 NOT FOUND", "404.html")
+    // Perbaikan di sini
+    let (status_line, filename) = match request_line.as_str() {
+        "GET / HTTP/1.1" => ("HTTP/1.1 200 OK", "hello.html"),
+
+        "GET /sleep HTTP/1.1" => {
+            thread::sleep(Duration::from_secs(10));  // Simulasi slow request
+            ("HTTP/1.1 200 OK", "hello.html")
+        }
+
+        _ => ("HTTP/1.1 404 NOT FOUND", "404.html"),
     };
 
     let contents = fs::read_to_string(filename).unwrap();
