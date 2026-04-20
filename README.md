@@ -44,3 +44,48 @@ Fungsi ini sudah sesuai dengan materi di chapter "Building a Single-Threaded Web
 - Menambahkan kemampuan untuk melayani file statis.
 
 ---
+
+
+# Rust HTTP Server - Hello World
+
+Proyek sederhana HTTP Server menggunakan Rust yang mengembalikan halaman HTML statis.
+
+## Deskripsi Proyek
+Proyek ini adalah implementasi web server sederhana menggunakan `std::net::TcpListener` dan `TcpStream`. Server ini merespons setiap request dengan halaman HTML dari file `hello.html`.
+
+## Commit 2 Reflection Notes
+
+### (2) Returning HTML
+
+Pada commit ini, saya telah berhasil mengubah fungsi `handle_connection` agar tidak hanya membaca HTTP request, tetapi juga mengembalikan respons berupa **halaman HTML** yang valid.
+
+#### Perubahan yang dilakukan:
+- Menambahkan `use std::fs;` untuk membaca file `hello.html`
+- Membuat response HTTP dengan status `200 OK` dan header `Content-Length`
+- Mengirimkan isi file HTML menggunakan `stream.write_all()`
+- Menggunakan format string yang benar dengan `\r\n` untuk memisahkan header dan body
+
+#### Screenshot Hasil:
+
+![Commit 2 screen capture](assets\images\image.png)
+
+#### Reflection:
+Sekarang server saya sudah bisa mengembalikan halaman web yang proper, bukan hanya teks biasa. Saya belajar pentingnya:
+- Format HTTP response yang benar (status line + headers + blank line + body)
+- Penggunaan `Content-Length` header
+- Cara membaca file eksternal di Rust menggunakan `fs::read_to_string`
+
+Pesan di halaman HTML sudah saya ubah menjadi:
+
+> "Hi from Rust, running from tirta's machine."
+
+
+
+---
+
+## Cara Menjalankan
+
+```bash
+cargo run
+
+
